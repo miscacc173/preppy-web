@@ -1,0 +1,1 @@
+<!doctype html><html><body style="font-family:Arial,sans-serif;color:#151933"><h2>{{ $heading }}</h2><p>You have been invited to AI Star Prep.</p><p><a href="{{ $activationUrl }}" style="display:inline-block;padding:12px 18px;background:#3b6ef8;color:white;text-decoration:none;border-radius:8px">Accept invitation</a></p><p>This link expires in seven days.</p></body></html>
