@@ -13,8 +13,8 @@ class TestingPlanBillingSeeder extends Seeder
         $courseId = DB::table('courses')->where('code', 'CAIE_O_LEVEL_2026')->value('id');
         $physicsId = DB::table('subjects')->where('code', '5054')->where('syllabus_year_start', 2026)->value('id');
         $mathId = DB::table('subjects')->where('code', '4024')->where('syllabus_year_start', 2026)->value('id');
-        $instituteId = DB::table('institutes')->where('code', 'AISTAR-DEMO-001')->value('id');
-        $adminId = DB::table('users')->where('email', 'admin@aistar.test')->value('id');
+        $instituteId = DB::table('institutes')->where('code', 'PREPPY-DEMO-001')->value('id');
+        $adminId = DB::table('users')->where('email', 'admin@preppy.test')->value('id');
 
         $plans = [
             ['Physics Monthly', 'PHYSICS_MONTHLY', 'subject', null, 1499, 0, [$physicsId]],
@@ -58,8 +58,8 @@ class TestingPlanBillingSeeder extends Seeder
             ['fixed_amount_minor' => null, 'percentage' => 15.0000, 'currency' => 'GBP', 'starts_at' => $now->copy()->subMonth(), 'ends_at' => null, 'is_active' => true, 'metadata' => json_encode(['seeded' => true]), 'created_at' => $now, 'updated_at' => $now]
         );
 
-        $platformUserId = DB::table('users')->where('email', 'student.platform@aistar.test')->value('id');
-        $instituteUserId = DB::table('users')->where('email', 'student.institute@aistar.test')->value('id');
+        $platformUserId = DB::table('users')->where('email', 'student.platform@preppy.test')->value('id');
+        $instituteUserId = DB::table('users')->where('email', 'student.institute@preppy.test')->value('id');
 
         $this->seedSubscription($platformUserId, $physicsPlanId, null, 1499, $physicsId, 'SUB-PLATFORM-001', $adminId, $now);
         $this->seedSubscription($instituteUserId, $institutePlanId, $instituteId, 2499, null, 'SUB-INSTITUTE-001', $adminId, $now);

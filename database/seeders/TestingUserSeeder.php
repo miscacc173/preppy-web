@@ -8,57 +8,53 @@ use Illuminate\Support\Facades\Hash;
 
 class TestingUserSeeder extends Seeder
 {
+    public const PASSWORD = 'Password@123';
+
     public function run(): void
     {
         $now = now();
-        $password = Hash::make('Password@123');
+        $password = Hash::make(self::PASSWORD);
 
+        // One login for every role supported by the application, plus a few
+        // additional students/parents needed to exercise relationship flows.
         $users = [
-            ['name' => 'System Administrator', 'email' => 'admin@aistar.test', 'role' => 'system_admin'],
-            ['name' => 'System Staff', 'email' => 'staff@aistar.test', 'role' => 'system_staff'],
-            ['name' => 'Content Tutor', 'email' => 'tutor@aistar.test', 'role' => 'tutor'],
-            ['name' => 'Institute Administrator', 'email' => 'institute.admin@aistar.test', 'role' => 'institute_admin'],
-            ['name' => 'Institute Staff', 'email' => 'institute.staff@aistar.test', 'role' => 'institute_staff'],
-            ['name' => 'Platform Student', 'email' => 'student.platform@aistar.test', 'role' => 'student'],
-            ['name' => 'Institute Student', 'email' => 'student.institute@aistar.test', 'role' => 'student'],
-            ['name' => 'Second Institute Student', 'email' => 'student.institute2@aistar.test', 'role' => 'student'],
-            ['name' => 'Demo Parent', 'email' => 'parent@aistar.test', 'role' => 'parent'],
+            ['System Administrator', 'admin@preppy.test', 'system_admin'],
+            ['System Staff', 'staff@preppy.test', 'system_staff'],
+            ['Platform Tutor', 'tutor@preppy.test', 'tutor'],
+            ['Institute Teacher', 'teacher@preppy.test', 'teacher'],
+            ['Institute Administrator', 'institute.admin@preppy.test', 'institute_admin'],
+            ['Institute Staff', 'institute.staff@preppy.test', 'institute_staff'],
+            ['Platform Student', 'student.platform@preppy.test', 'student'],
+            ['Institute Student', 'student.institute@preppy.test', 'student'],
+            ['Second Institute Student', 'student.institute2@preppy.test', 'student'],
+            ['Demo Parent', 'parent@preppy.test', 'parent'],
+            ['Second Parent', 'parent2@preppy.test', 'parent'],
         ];
 
-        foreach ($users as $user) {
+        foreach ($users as [$name, $email, $role]) {
             DB::table('users')->updateOrInsert(
-                ['email' => $user['email']],
+                ['email' => $email],
                 [
-                    'name' => $user['name'],
+                    'name' => $name,
                     'password' => $password,
                     'status' => 'active',
                     'email_verified_at' => $now,
+                    'last_login_at' => $now->copy()->subHour(),
                     'timezone' => 'Asia/Karachi',
                     'locale' => 'en',
-                    'metadata' => json_encode(['seeded' => true]),
+                    'metadata' => json_encode(['seeded' => true, 'test_login' => true]),
                     'created_at' => $now,
                     'updated_at' => $now,
                     'deleted_at' => null,
                 ]
             );
 
-            $userId = DB::table('users')->where('email', $user['email'])->value('id');
-            $roleId = DB::table('roles')->where('slug', $user['role'])->value('id');
+            $userId = DB::table('users')->where('email', $email)->value('id');
+            $roleId = DB::table('roles')->where('slug', $role)->value('id');
 
             DB::table('user_roles')->updateOrInsert(
-                [
-                    'user_id' => $userId,
-                    'role_id' => $roleId,
-                    'context_type' => 'system',
-                    'context_id' => null,
-                ],
-                [
-                    'starts_at' => $now,
-                    'ends_at' => null,
-                    'assigned_by' => null,
-                    'created_at' => $now,
-                    'updated_at' => $now,
-                ]
+                ['user_id' => $userId, 'role_id' => $roleId, 'context_type' => 'system', 'context_id' => null],
+                ['starts_at' => $now, 'ends_at' => null, 'assigned_by' => null, 'created_at' => $now, 'updated_at' => $now]
             );
         }
     }

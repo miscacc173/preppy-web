@@ -11,17 +11,17 @@ class TestingInstituteStudentSeeder extends Seeder
     public function run(): void
     {
         $now = now();
-        $adminId = DB::table('users')->where('email', 'admin@aistar.test')->value('id');
-        $instituteAdminId = DB::table('users')->where('email', 'institute.admin@aistar.test')->value('id');
-        $instituteStaffId = DB::table('users')->where('email', 'institute.staff@aistar.test')->value('id');
+        $adminId = DB::table('users')->where('email', 'admin@preppy.test')->value('id');
+        $instituteAdminId = DB::table('users')->where('email', 'institute.admin@preppy.test')->value('id');
+        $instituteStaffId = DB::table('users')->where('email', 'institute.staff@preppy.test')->value('id');
 
         DB::table('institutes')->updateOrInsert(
-            ['code' => 'AISTAR-DEMO-001'],
+            ['code' => 'PREPPY-DEMO-001'],
             [
-                'name' => 'AI Star Demo Academy',
-                'slug' => 'ai-star-demo-academy',
+                'name' => 'Preppy Demo Academy',
+                'slug' => 'preppy-demo-academy',
                 'status' => 'active',
-                'billing_email' => 'billing@aistar.test',
+                'billing_email' => 'billing@preppy.test',
                 'phone' => '+92-300-0000000',
                 'address' => 'Demo Campus, Main Boulevard',
                 'city' => 'Lahore',
@@ -35,7 +35,7 @@ class TestingInstituteStudentSeeder extends Seeder
             ]
         );
 
-        $instituteId = DB::table('institutes')->where('code', 'AISTAR-DEMO-001')->value('id');
+        $instituteId = DB::table('institutes')->where('code', 'PREPPY-DEMO-001')->value('id');
 
         foreach ([
             [$instituteAdminId, 'Principal'],
@@ -62,9 +62,9 @@ class TestingInstituteStudentSeeder extends Seeder
         $examBoardId = DB::table('exam_boards')->where('code', 'CAIE')->value('id');
 
         $students = [
-            ['student.platform@aistar.test', 'platform', null, 'Year 10', 'Beacon School'],
-            ['student.institute@aistar.test', 'institute', $instituteId, 'Year 10', 'AI Star Demo Academy'],
-            ['student.institute2@aistar.test', 'institute', $instituteId, 'Year 11', 'AI Star Demo Academy'],
+            ['student.platform@preppy.test', 'platform', null, 'Year 10', 'Beacon School'],
+            ['student.institute@preppy.test', 'institute', $instituteId, 'Year 10', 'Preppy Demo Academy'],
+            ['student.institute2@preppy.test', 'institute', $instituteId, 'Year 11', 'Preppy Demo Academy'],
         ];
 
         foreach ($students as [$email, $ownership, $studentInstituteId, $schoolYear, $schoolName]) {
@@ -90,7 +90,7 @@ class TestingInstituteStudentSeeder extends Seeder
             );
         }
 
-        foreach (['student.platform@aistar.test', 'student.institute@aistar.test', 'student.institute2@aistar.test'] as $email) {
+        foreach (['student.platform@preppy.test', 'student.institute@preppy.test', 'student.institute2@preppy.test'] as $email) {
             $profileId = DB::table('student_profiles')->where('user_id', DB::table('users')->where('email', $email)->value('id'))->value('id');
             foreach (['5054', '4024'] as $subjectCode) {
                 $subjectId = DB::table('subjects')->where('code', $subjectCode)->where('syllabus_year_start', 2026)->value('id');
@@ -101,8 +101,8 @@ class TestingInstituteStudentSeeder extends Seeder
             }
         }
 
-        $parentId = DB::table('users')->where('email', 'parent@aistar.test')->value('id');
-        $platformStudentId = DB::table('users')->where('email', 'student.platform@aistar.test')->value('id');
+        $parentId = DB::table('users')->where('email', 'parent@preppy.test')->value('id');
+        $platformStudentId = DB::table('users')->where('email', 'student.platform@preppy.test')->value('id');
         DB::table('parent_student_links')->updateOrInsert(
             ['parent_user_id' => $parentId, 'student_user_id' => $platformStudentId],
             ['relationship' => 'Father', 'status' => 'active', 'can_view_performance' => true, 'can_view_subscription' => true, 'invited_by' => $platformStudentId, 'accepted_at' => $now, 'created_at' => $now, 'updated_at' => $now]
@@ -111,12 +111,12 @@ class TestingInstituteStudentSeeder extends Seeder
         $token = 'demo-institute-invite-token';
         DB::table('institute_invites')->updateOrInsert(
             ['token_hash' => hash('sha256', $token)],
-            ['institute_id' => $instituteId, 'email' => 'new.staff@aistar.test', 'role_slug' => 'institute_staff', 'expires_at' => $now->copy()->addDays(7), 'accepted_at' => null, 'invited_by' => $instituteAdminId, 'metadata' => json_encode(['plain_token_for_testing' => $token]), 'created_at' => $now, 'updated_at' => $now]
+            ['institute_id' => $instituteId, 'email' => 'new.staff@preppy.test', 'role_slug' => 'institute_staff', 'expires_at' => $now->copy()->addDays(7), 'accepted_at' => null, 'invited_by' => $instituteAdminId, 'metadata' => json_encode(['plain_token_for_testing' => $token]), 'created_at' => $now, 'updated_at' => $now]
         );
 
         DB::table('guest_demo_sessions')->updateOrInsert(
             ['id' => '11111111-1111-4111-8111-111111111111'],
-            ['email' => 'guest@aistar.test', 'device_fingerprint' => 'postman-demo-device', 'status' => 'active', 'started_at' => $now, 'expires_at' => $now->copy()->addDays(7), 'converted_at' => null, 'converted_user_id' => null, 'progress_snapshot' => json_encode(['subject_code' => '5054', 'questions_attempted' => 12, 'correct_answers' => 9]), 'metadata' => json_encode(['seeded' => true]), 'created_at' => $now, 'updated_at' => $now]
+            ['email' => 'guest@preppy.test', 'device_fingerprint' => 'postman-demo-device', 'status' => 'active', 'started_at' => $now, 'expires_at' => $now->copy()->addDays(7), 'converted_at' => null, 'converted_user_id' => null, 'progress_snapshot' => json_encode(['subject_code' => '5054', 'questions_attempted' => 12, 'correct_answers' => 9]), 'metadata' => json_encode(['seeded' => true]), 'created_at' => $now, 'updated_at' => $now]
         );
     }
 }

@@ -57,6 +57,13 @@ class TestingAcademicDataSeeder extends Seeder
             );
         }
 
+        foreach (DB::table('courses')->where('exam_board_id', $cambridgeId)->pluck('id') as $courseWithBoardId) {
+            DB::table('course_exam_boards')->updateOrInsert(
+                ['course_id' => $courseWithBoardId, 'exam_board_id' => $cambridgeId],
+                ['created_at' => $now, 'updated_at' => $now]
+            );
+        }
+
         $oLevelCourseId = DB::table('courses')->where('code', 'CAIE_O_LEVEL_2026')->value('id');
         foreach (['5054', '5070', '5090', '4024', '2210', '1123'] as $index => $subjectCode) {
             $subjectId = DB::table('subjects')->where('code', $subjectCode)->where('syllabus_year_start', 2026)->value('id');

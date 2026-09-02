@@ -15,8 +15,14 @@ class TestingDataSeeder extends Seeder
                 TestingAcademicDataSeeder::class,
                 TopicSeeder::class,
                 TestingInstituteStudentSeeder::class,
+                TestingEducatorSeeder::class,
                 TestingPlanBillingSeeder::class,
+                TestingPromotionSeeder::class,
+                TestingBillingLifecycleSeeder::class,
+                TestingEngagementSeeder::class,
+                TestingInvitationSeeder::class,
                 TestingNotificationAuditSeeder::class,
+                TestingAppleIapSeeder::class,
             ]);
         });
     }
