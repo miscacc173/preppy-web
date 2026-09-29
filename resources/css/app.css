@@ -1,0 +1,13 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+@source '../**/*.vue';
+
+@keyframes ops-backdrop-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes ops-dialog-in { from { opacity: 0; transform: translateY(18px) scale(.965); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.ops-legacy-modal { animation: ops-backdrop-in .2s ease-out both; backdrop-filter: blur(3px); }
+.ops-legacy-modal > * { animation: ops-dialog-in .28s cubic-bezier(.2,.8,.2,1) both; }
+@media (prefers-reduced-motion: reduce) { .ops-legacy-modal, .ops-legacy-modal > * { animation-duration: .01ms; } }

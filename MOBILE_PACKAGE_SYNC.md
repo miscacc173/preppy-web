@@ -1,0 +1,1 @@
+Flutter native package/bundle identifier is `com.preppy.preppy`. `.env.example` now uses this for `APPLE_SIGN_IN_NATIVE_CLIENT_ID` and `APPLE_IAP_BUNDLE_ID`. Existing Laravel runtime flows are otherwise unchanged.
